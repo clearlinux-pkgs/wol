@@ -1,0 +1,4 @@
+Configure miss: AIX
+Configure miss: struct ether_addr.octet
+Configure miss: strerror in -lcposix
+Configure miss: wheter you want ANSI emulation
