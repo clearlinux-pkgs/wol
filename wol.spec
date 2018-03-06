@@ -6,7 +6,7 @@
 #
 Name     : wol
 Version  : 0.7.1
-Release  : 2
+Release  : 3
 URL      : https://downloads.sourceforge.net/project/wake-on-lan/wol/0.7.1/wol-0.7.1.tar.gz
 Source0  : https://downloads.sourceforge.net/project/wake-on-lan/wol/0.7.1/wol-0.7.1.tar.gz
 Source99 : https://downloads.sourceforge.net/project/wake-on-lan/wol/0.7.1/wol-0.7.1.tar.gz.asc
@@ -56,9 +56,9 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1510014114
+export SOURCE_DATE_EPOCH=1520356886
 %configure --disable-static
-make V=1  %{?_smp_mflags}
+make  %{?_smp_mflags}
 
 %check
 export LANG=C
@@ -68,7 +68,7 @@ export no_proxy=localhost,127.0.0.1,0.0.0.0
 make VERBOSE=1 V=1 %{?_smp_mflags} check
 
 %install
-export SOURCE_DATE_EPOCH=1510014114
+export SOURCE_DATE_EPOCH=1520356886
 rm -rf %{buildroot}
 %make_install
 %find_lang wol
