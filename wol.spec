@@ -6,16 +6,17 @@
 #
 Name     : wol
 Version  : 0.7.1
-Release  : 4
-URL      : https://downloads.sourceforge.net/project/wake-on-lan/wol/0.7.1/wol-0.7.1.tar.gz
-Source0  : https://downloads.sourceforge.net/project/wake-on-lan/wol/0.7.1/wol-0.7.1.tar.gz
-Source99 : https://downloads.sourceforge.net/project/wake-on-lan/wol/0.7.1/wol-0.7.1.tar.gz.asc
+Release  : 5
+URL      : https://sourceforge.net/projects/wake-on-lan/files/wol/0.7.1/wol-0.7.1.tar.gz
+Source0  : https://sourceforge.net/projects/wake-on-lan/files/wol/0.7.1/wol-0.7.1.tar.gz
+Source99 : https://sourceforge.net/projects/wake-on-lan/files/wol/0.7.1/wol-0.7.1.tar.gz.asc
 Summary  : The Wake On Lan client.
 Group    : Development/Tools
 License  : GPL-2.0
-Requires: wol-bin
-Requires: wol-doc
-Requires: wol-locales
+Requires: wol-bin = %{version}-%{release}
+Requires: wol-license = %{version}-%{release}
+Requires: wol-locales = %{version}-%{release}
+Requires: wol-man = %{version}-%{release}
 BuildRequires : bison
 
 %description
@@ -27,6 +28,8 @@ is also provided by wol.
 %package bin
 Summary: bin components for the wol package.
 Group: Binaries
+Requires: wol-license = %{version}-%{release}
+Requires: wol-man = %{version}-%{release}
 
 %description bin
 bin components for the wol package.
@@ -35,9 +38,18 @@ bin components for the wol package.
 %package doc
 Summary: doc components for the wol package.
 Group: Documentation
+Requires: wol-man = %{version}-%{release}
 
 %description doc
 doc components for the wol package.
+
+
+%package license
+Summary: license components for the wol package.
+Group: Default
+
+%description license
+license components for the wol package.
 
 
 %package locales
@@ -48,6 +60,14 @@ Group: Default
 locales components for the wol package.
 
 
+%package man
+Summary: man components for the wol package.
+Group: Default
+
+%description man
+man components for the wol package.
+
+
 %prep
 %setup -q -n wol-0.7.1
 
@@ -56,7 +76,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1520356886
+export SOURCE_DATE_EPOCH=1545260226
 %configure --disable-static
 make  %{?_smp_mflags}
 
@@ -68,8 +88,11 @@ export no_proxy=localhost,127.0.0.1,0.0.0.0
 make VERBOSE=1 V=1 %{?_smp_mflags} check
 
 %install
-export SOURCE_DATE_EPOCH=1520356886
+export SOURCE_DATE_EPOCH=1545260226
 rm -rf %{buildroot}
+mkdir -p %{buildroot}/usr/share/package-licenses/wol
+cp COPYING %{buildroot}/usr/share/package-licenses/wol/COPYING
+cp debian/copyright %{buildroot}/usr/share/package-licenses/wol/debian_copyright
 %make_install
 %find_lang wol
 
@@ -83,9 +106,17 @@ rm -rf %{buildroot}
 /usr/bin/wol-dhcpdconf
 
 %files doc
-%defattr(-,root,root,-)
+%defattr(0644,root,root,0755)
 %doc /usr/share/info/*
-%doc /usr/share/man/man1/*
+
+%files license
+%defattr(0644,root,root,0755)
+/usr/share/package-licenses/wol/COPYING
+/usr/share/package-licenses/wol/debian_copyright
+
+%files man
+%defattr(0644,root,root,0755)
+/usr/share/man/man1/wol.1
 
 %files locales -f wol.lang
 %defattr(-,root,root,-)
