@@ -6,7 +6,7 @@
 #
 Name     : wol
 Version  : 0.7.1
-Release  : 5
+Release  : 6
 URL      : https://sourceforge.net/projects/wake-on-lan/files/wol/0.7.1/wol-0.7.1.tar.gz
 Source0  : https://sourceforge.net/projects/wake-on-lan/files/wol/0.7.1/wol-0.7.1.tar.gz
 Source99 : https://sourceforge.net/projects/wake-on-lan/files/wol/0.7.1/wol-0.7.1.tar.gz.asc
