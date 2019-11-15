@@ -6,14 +6,15 @@
 #
 Name     : wol
 Version  : 0.7.1
-Release  : 6
+Release  : 7
 URL      : https://sourceforge.net/projects/wake-on-lan/files/wol/0.7.1/wol-0.7.1.tar.gz
 Source0  : https://sourceforge.net/projects/wake-on-lan/files/wol/0.7.1/wol-0.7.1.tar.gz
-Source99 : https://sourceforge.net/projects/wake-on-lan/files/wol/0.7.1/wol-0.7.1.tar.gz.asc
+Source1 : https://sourceforge.net/projects/wake-on-lan/files/wol/0.7.1/wol-0.7.1.tar.gz.asc
 Summary  : The Wake On Lan client.
 Group    : Development/Tools
 License  : GPL-2.0
 Requires: wol-bin = %{version}-%{release}
+Requires: wol-info = %{version}-%{release}
 Requires: wol-license = %{version}-%{release}
 Requires: wol-locales = %{version}-%{release}
 Requires: wol-man = %{version}-%{release}
@@ -29,19 +30,17 @@ is also provided by wol.
 Summary: bin components for the wol package.
 Group: Binaries
 Requires: wol-license = %{version}-%{release}
-Requires: wol-man = %{version}-%{release}
 
 %description bin
 bin components for the wol package.
 
 
-%package doc
-Summary: doc components for the wol package.
-Group: Documentation
-Requires: wol-man = %{version}-%{release}
+%package info
+Summary: info components for the wol package.
+Group: Default
 
-%description doc
-doc components for the wol package.
+%description info
+info components for the wol package.
 
 
 %package license
@@ -70,29 +69,38 @@ man components for the wol package.
 
 %prep
 %setup -q -n wol-0.7.1
+cd %{_builddir}/wol-0.7.1
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
-export LANG=C
-export SOURCE_DATE_EPOCH=1545260226
+export LANG=C.UTF-8
+export SOURCE_DATE_EPOCH=1573791229
+export GCC_IGNORE_WERROR=1
+export AR=gcc-ar
+export RANLIB=gcc-ranlib
+export NM=gcc-nm
+export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
+export FCFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
+export FFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
+export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=4 "
 %configure --disable-static
 make  %{?_smp_mflags}
 
 %check
-export LANG=C
+export LANG=C.UTF-8
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 make VERBOSE=1 V=1 %{?_smp_mflags} check
 
 %install
-export SOURCE_DATE_EPOCH=1545260226
+export SOURCE_DATE_EPOCH=1573791229
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/wol
-cp COPYING %{buildroot}/usr/share/package-licenses/wol/COPYING
-cp debian/copyright %{buildroot}/usr/share/package-licenses/wol/debian_copyright
+cp %{_builddir}/wol-0.7.1/COPYING %{buildroot}/usr/share/package-licenses/wol/dfac199a7539a404407098a2541b9482279f690d
+cp %{_builddir}/wol-0.7.1/debian/copyright %{buildroot}/usr/share/package-licenses/wol/30a52193aaa76b57505484e948eaa4fd4a7d4913
 %make_install
 %find_lang wol
 
@@ -105,14 +113,14 @@ cp debian/copyright %{buildroot}/usr/share/package-licenses/wol/debian_copyright
 /usr/bin/wol-bootptab
 /usr/bin/wol-dhcpdconf
 
-%files doc
+%files info
 %defattr(0644,root,root,0755)
-%doc /usr/share/info/*
+/usr/share/info/wol.info
 
 %files license
 %defattr(0644,root,root,0755)
-/usr/share/package-licenses/wol/COPYING
-/usr/share/package-licenses/wol/debian_copyright
+/usr/share/package-licenses/wol/30a52193aaa76b57505484e948eaa4fd4a7d4913
+/usr/share/package-licenses/wol/dfac199a7539a404407098a2541b9482279f690d
 
 %files man
 %defattr(0644,root,root,0755)
